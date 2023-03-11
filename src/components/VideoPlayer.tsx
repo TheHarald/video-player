@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { getEventsFetch, setCurrenTtime } from '../redux/eventsSlice';
+import { getEventsFetch } from '../redux/eventsSlice';
 import EventButton from './EventButton';
 import EventCard from './EventCard';
+import { setCurrenTtime } from '../redux/videoTimeSlice';
 
 
 const StyledVideoContainer = styled.div`
@@ -35,18 +36,19 @@ const StyledErrorMessage = styled.span`
 function VideoPlayer() {
 
     const { events, isLoading, error } = useAppSelector(state => state.events)
-    const currentTime = useAppSelector(state => state.events.currentTime)
-    const playerRef = useRef<ReactPlayer>(null)
+    const playerRef = useRef<ReactPlayer | null>(null)
     const dispatch = useAppDispatch()
-
+    console.log('video component');
 
     useEffect(() => {
         dispatch(getEventsFetch())
     }, [])
 
     const updateTime = () => {
-        dispatch(setCurrenTtime(Math.trunc(playerRef.current.getCurrentTime() * 1000)))
-        requestAnimationFrame(updateTime);
+        if (playerRef.current) {
+            dispatch(setCurrenTtime(Math.trunc(playerRef.current.getCurrentTime() * 1000)))
+            requestAnimationFrame(updateTime);
+        }
     };
 
     const handlePlay = () => {
@@ -54,15 +56,19 @@ function VideoPlayer() {
     };
 
     const handlePause = () => {
-        dispatch(setCurrenTtime(Math.trunc(playerRef.current.getCurrentTime() * 1000)))
+        if (playerRef.current) {
+            dispatch(setCurrenTtime(Math.trunc(playerRef.current.getCurrentTime() * 1000)))
+        }
     };
 
     const handleVideoClick = () => {
-        const player = playerRef.current.getInternalPlayer();
-        if (player.getPlayerState() === 1) {
-            player.pauseVideo();
-        } else {
-            player.playVideo();
+        if (playerRef.current) {
+            const player = playerRef.current.getInternalPlayer();
+            if (player.getPlayerState() === 1) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
         }
     };
 
@@ -85,7 +91,6 @@ function VideoPlayer() {
                             duration={event.duration}
                             zone={event.zone}
                             timestamp={event.timestamp}
-                            currentTime={currentTime}
                         />
                     })
                 }
@@ -100,7 +105,7 @@ function VideoPlayer() {
                     isLoading ? <span>Загрузка</span> : events.map(event => {
                         return <EventButton
                             timestamp={event.timestamp}
-                            playeRef={playerRef}
+                            playerRef={playerRef}
                             key={event.id}
                         />
                     })

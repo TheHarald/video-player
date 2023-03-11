@@ -1,5 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { useAppSelector } from '../hooks/hooks';
 
 
 type EventCardProps = {
@@ -25,9 +26,11 @@ const StyledEventCard = styled.span<EventCardProps>`
     
 `
 
-function EventCard(props: EventCardProps) {
+function EventCard(props: Omit<EventCardProps, 'currentTime'>) {
+
+    const currentTime = useAppSelector(state => state.videoTime.currentTime)
     return (
-        <StyledEventCard {...props}>
+        <StyledEventCard {...props} currentTime={currentTime}>
         </StyledEventCard>
     );
 }

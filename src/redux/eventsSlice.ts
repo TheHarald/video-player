@@ -3,10 +3,9 @@ import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
 import { Event } from "../types/Event";
 
 
-const initialState: { events: Event[], isLoading: boolean, error: string, currentTime: number } = {
+const initialState: { events: Event[], isLoading: boolean, error: string } = {
     events: [],
     isLoading: false,
-    currentTime: 0,
     error: ''
 }
 
@@ -26,12 +25,9 @@ const eventSlice = createSlice({
             state.error = action.payload
             state.isLoading = false
         },
-        setCurrenTtime(state, action: PayloadAction<number>) {
-            state.currentTime = action.payload
-        }
     }
 })
 
 
-export const { getEventsFailure, getEventsSuccess, getEventsFetch, setCurrenTtime } = eventSlice.actions;
+export const { getEventsFailure, getEventsSuccess, getEventsFetch } = eventSlice.actions;
 export default eventSlice.reducer;

@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 `
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <>
     <GlobalStyle />
