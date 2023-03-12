@@ -1,39 +1,33 @@
 import createSagaMiddlware from 'redux-saga'
 import { combineReducers, configureStore, PreloadedState, applyMiddleware } from '@reduxjs/toolkit';
-import eventsReducer from './eventsSlice';
-import videoTimeReducer from './videoTimeSlice'
-import { eventsWatcher } from './eventsSaga';
+import eventsReducer from './features/eventsSlice/eventsSlice';
+import videoTimeReducer from './features/videoTimeSlice/videoTimeSlice'
+import { eventsWatcher } from './saga/eventsSaga';
 
 
-const sagaMiddlware = createSagaMiddlware()
-
-export const store = configureStore({
-    reducer: {
-        events: eventsReducer,
-        videoTime: videoTimeReducer
-    },
-    middleware: [sagaMiddlware]
+const rootReducer = combineReducers({
+    events: eventsReducer,
+    videoTime: videoTimeReducer,
 })
 
-sagaMiddlware.run(eventsWatcher)
+export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>
-export type AppStore = RootState
+    const sagaMiddlware = createSagaMiddlware()
 
-// const rootReducer = combineReducers({
-//     events: eventsReducer,
-//     videoTime: videoTimeReducer,
-// })
+    const store = configureStore({
+        reducer: {
+            events: eventsReducer,
+            videoTime: videoTimeReducer
+        },
+        middleware: [sagaMiddlware],
+        preloadedState
+    })
 
-// export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+    sagaMiddlware.run(eventsWatcher)
 
-//     return configureStore({
-//         reducer: {
-//                     events: eventsReducer,
-//                     videoTime: videoTimeReducer
-//                 },
-//         middleware: [sagaMiddlware],
-//         preloadedState
-//     })
-// }
+    return store
+}
+
+export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof setupStore>
+export type AppDispatch = AppStore['dispatch']

@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import React, { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { getEventsFetch } from '../../redux/eventsSlice';
+import { getEventsFetch } from '../../redux/features/eventsSlice/eventsSlice';
 import EventButton from '../EventButton/EventButton';
 import EventCard from '../EventCard/EventCard';
-import { setCurrenTtime } from '../../redux/videoTimeSlice';
+import { setCurrenTtime } from '../../redux/features/videoTimeSlice/videoTimeSlice';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 
@@ -36,7 +36,6 @@ function VideoPlayer() {
     const { events, isLoading, error } = useAppSelector(state => state.events)
     const playerRef = useRef<ReactPlayer | null>(null)
     const dispatch = useAppDispatch()
-    console.log('video component');
 
     useEffect(() => {
         dispatch(getEventsFetch())
@@ -74,7 +73,7 @@ function VideoPlayer() {
         <StyledVideoPlayer>
             <StyledVideoContainer onClick={handleVideoClick}>
                 <ReactPlayer
-                    url={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
+                    url={'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
                     controls
                     ref={playerRef}
                     onPause={handlePause}

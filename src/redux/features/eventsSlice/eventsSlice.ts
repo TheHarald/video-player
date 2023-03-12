@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { PayloadAction } from "@reduxjs/toolkit/dist/createAction";
-import { Event } from "../types/Event";
+import { Event } from "../../../types/Event";
 
 
 const initialState: { events: Event[], isLoading: boolean, error: string } = {

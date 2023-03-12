@@ -11,6 +11,7 @@ const videoTimeSlice = createSlice({
     initialState,
     reducers: {
         setCurrenTtime(state, action: PayloadAction<number>) {
+            if (action.payload < 0) action.payload = 0
             state.currentTime = action.payload
         }
     }

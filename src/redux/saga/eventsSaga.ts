@@ -1,11 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { Event } from '../types/Event'
-import { getEventsFailure, getEventsSuccess } from './eventsSlice'
+import { Event } from '../../types/Event'
+import { getEventsFailure, getEventsSuccess } from '../features/eventsSlice/eventsSlice'
 
 
 function* eventsWorker() {
     try {
-        const response: Response = yield (call(() => fetch('http://www.mocky.io/v2/5e60c5f53300005fcc97bbdd')))
+        const response: Response = yield (call(() => fetch('https://www.mocky.io/v2/5e60c5f53300005fcc97bbdd')))
         const events: Event[] = yield response.json()
         const sortedevents: Event[] = yield events.sort(((a, b) => a.timestamp - b.timestamp))
         yield put(getEventsSuccess(sortedevents))
