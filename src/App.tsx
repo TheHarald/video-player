@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import VideoPlayer from './components/VideoPlayer'
+import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 
 
 const StyledAppContainer = styled.div`

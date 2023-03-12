@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { getEventsFetch } from '../redux/eventsSlice';
-import EventButton from './EventButton';
-import EventCard from './EventCard';
-import { setCurrenTtime } from '../redux/videoTimeSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { getEventsFetch } from '../../redux/eventsSlice';
+import EventButton from '../EventButton/EventButton';
+import EventCard from '../EventCard/EventCard';
+import { setCurrenTtime } from '../../redux/videoTimeSlice';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 
 const StyledVideoContainer = styled.div`
@@ -28,10 +29,7 @@ const StyledEventsContainer = styled.div`
     padding: 16px;
 `
 
-const StyledErrorMessage = styled.span`
-    color: red;
-    font-size: 20px;
-`
+
 
 function VideoPlayer() {
 
@@ -96,9 +94,7 @@ function VideoPlayer() {
                 }
             </StyledVideoContainer>
 
-            <StyledErrorMessage>
-                {error}
-            </StyledErrorMessage>
+            <ErrorMessage message={error} />
 
             <StyledEventsContainer>
                 {
